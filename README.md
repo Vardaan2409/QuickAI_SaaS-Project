@@ -5,7 +5,7 @@
 
 This AI SaaS platform offers premium AI tools like article generation, image editing, and resume analysis behind a subscription paywall. Built with the PERN stack, it includes secure authentication, billing, and serverless PostgreSQL.
 
-Key Features:
+## Key Features:
 
 1) User Authentication: Secure sign-in, sign-up and profile management using Clerk
 
@@ -13,7 +13,7 @@ Key Features:
 
 3) PostgreSQL Database: Serverless postgres Database by Neon
 
-AI features:
+## AI features:
 
 1) Article Generator: Provide Title & length to generate article using AI
 
