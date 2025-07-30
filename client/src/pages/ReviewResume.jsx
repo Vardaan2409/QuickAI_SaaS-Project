@@ -17,26 +17,57 @@ const ReviewResume = () => {
 
     const onSubmitHandler = async (e) => {
         e.preventDefault();
-        try {
-            setLoading(true);
+        // try {
+        //     setLoading(true);
 
-            const formData = new FormData()
-            formData.append("resume", input)
+        //     const formData = new FormData()
+        //     formData.append("resume", input)
 
-            const { data } = await axios.post('/api/ai/resume-review', formData,
-                { headers: { Authorization: `Bearer ${await getToken()}` } })
+        //     const { data } = await axios.post('/api/ai/resume-review', formData,
+        //         { headers: { Authorization: `Bearer ${await getToken()}` } })
 
-            //console.log("Received from backend:", data)
+        //     //console.log("Received from backend:", data)
 
-            if (data.success) {
-                setContent(data.content)
-            } else {
-                toast.error(data.message);
-            }
-        } catch (error) {
-            toast.error(error.response?.data?.message || "Something went wrong");
+        //     if (data.success) {
+        //         setContent(data.content)
+        //     } else {
+        //         toast.error(data.message);
+        //     }
+        // } catch (error) {
+        //     toast.error(error.response?.data?.message || "Something went wrong");
+        // }
+        // setLoading(false);
+
+        if (!input) {
+            return toast.error("Please upload a resume file.");
         }
-        setLoading(false);
+
+        const formData = new FormData();
+        formData.append("resume", input);
+
+        const token = await getToken();
+
+        setLoading(true);
+
+        try {
+            await toast.promise(
+                axios.post('/api/ai/resume-review', formData, {
+                    headers: { Authorization: `Bearer ${token}` }
+                }),
+                {
+                    loading: "Analyzing resume...",
+                    success: (res) => {
+                        setContent(res.data.content); 
+                        return "Resume reviewed successfully!";
+                    },
+                    error: (err) => {
+                        return err?.response?.data?.message || "Something went wrong during review.";
+                    }
+                }
+            );
+        } finally {
+            setLoading(false);
+        }
     }
 
     return (
@@ -103,7 +134,7 @@ const ReviewResume = () => {
                                 <Markdown>{content}</Markdown>
                             </div>
                         </div>
-                        )
+                    )
                 }
             </div>
         </div>

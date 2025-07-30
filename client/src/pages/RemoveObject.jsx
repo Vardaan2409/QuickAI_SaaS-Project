@@ -22,34 +22,66 @@ const RemoveObject = () => {
         //console.log("Form submitted");
 
         e.preventDefault();
-        if (!input) return toast.error("Please upload an image");
-        if (!object) return toast.error("Please enter object to remove");
+        // if (!input) return toast.error("Please upload an image");
+        // if (!object) return toast.error("Please enter object to remove");
+
+        // try {
+        //     setLoading(true);
+
+        //     if (object.split(' ').length > 1) {
+        //         return toast("Please enter only one object name")
+        //     }
+
+        //     const formData = new FormData()
+        //     formData.append("image", input)
+        //     formData.append("object", object)
+
+        //     const { data } = await axios.post('/api/ai/remove-image-object', formData,
+        //         { headers: { Authorization: `Bearer ${await getToken()}` } })
+
+        //     //console.log("Received from backend:", data)
+
+        //     if (data.success) {
+        //         setContent(data.content)
+        //     } else {
+        //         toast.error(data.message);
+        //     }
+        // } catch (error) {
+        //     toast.error(error.response?.data?.message || "Something went wrong");
+        // }
+        // setLoading(false);
+
+        if (!input) return toast.error("Please upload an image.");
+        if (!object) return toast.error("Please enter the object to remove.");
+        if (object.trim().split(' ').length > 1) return toast.error("Please enter only one object name.");
+
+        const formData = new FormData();
+        formData.append("image", input);
+        formData.append("object", object);
+
+        const token = await getToken();
+
+        setLoading(true);
 
         try {
-            setLoading(true);
-
-            if (object.split(' ').length > 1) {
-                return toast("Please enter only one object name")
-            }
-
-            const formData = new FormData()
-            formData.append("image", input)
-            formData.append("object", object)
-
-            const { data } = await axios.post('/api/ai/remove-image-object', formData,
-                { headers: { Authorization: `Bearer ${await getToken()}` } })
-
-            //console.log("Received from backend:", data)
-
-            if (data.success) {
-                setContent(data.content)
-            } else {
-                toast.error(data.message);
-            }
-        } catch (error) {
-            toast.error(error.response?.data?.message || "Something went wrong");
+            await toast.promise(
+                axios.post('/api/ai/remove-image-object', formData, {
+                    headers: { Authorization: `Bearer ${token}` }
+                }),
+                {
+                    loading: "Removing object from image...",
+                    success: (res) => {
+                        setContent(res.data.content);
+                        return "Object removed successfully!";
+                    },
+                    error: (err) => {
+                        return err?.response?.data?.message || "Failed to remove object.";
+                    }
+                }
+            );
+        } finally {
+            setLoading(false);
         }
-        setLoading(false);
     }
 
     return (

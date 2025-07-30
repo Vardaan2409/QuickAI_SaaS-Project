@@ -16,22 +16,50 @@ const RemoveBackground = () => {
 
     const onSubmitHandler = async (e) => {
         e.preventDefault();
+        // try {
+        //     setLoading(true);
+
+        //     const formData = new FormData()
+        //     formData.append("image", input)
+
+        //     const { data } = await axios.post('/api/ai/remove-image-background', formData,
+        //         { headers: { Authorization: `Bearer ${await getToken()}` } })
+
+        //     if (data.success) {
+        //         setContent(data.content)
+        //     } else {
+        //         toast.error(data.message);
+        //     }
+        // } catch (error) {
+        //     toast.error(error.response?.data?.message || "Something went wrong");
+        // }
+        // setLoading(false);
+
+        if (!input) return toast.error("Please upload an image.");
+
+        const formData = new FormData();
+        formData.append("image", input);
+
+        const token = await getToken();
+
         try {
-            setLoading(true);
+            toast.loading("Removing background...");
 
-            const formData = new FormData()
-            formData.append("image", input)
+            const { data } = await axios.post('/api/ai/remove-image-background', formData, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
 
-            const { data } = await axios.post('/api/ai/remove-image-background', formData,
-                { headers: { Authorization: `Bearer ${await getToken()}` } })
+            toast.dismiss();
 
             if (data.success) {
-                setContent(data.content)
+                setContent(data.content);
+                toast.success("Background removed successfully!");
             } else {
-                toast.error(data.message);
+                toast.error(data.message || "Background removal failed.");
             }
-        } catch (error) {
-            toast.error(error.response?.data?.message || "Something went wrong");
+        } catch (err) {
+            toast.dismiss();
+            toast.error(err?.response?.data?.message || "Something went wrong.");
         }
         setLoading(false);
     }

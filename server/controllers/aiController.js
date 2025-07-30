@@ -36,7 +36,7 @@ export const generateArticle = async (req, res) => {
         const model = genAI.getGenerativeModel({
             model: "gemini-2.0-flash", generationConfig: {
                 temperature: 0.7,
-                maxOutputTokens: 1000,
+                maxOutputTokens: 2000,
             },
         });
         const result = await model.generateContent(prompt);
@@ -102,7 +102,7 @@ export const generateBlogTitle = async (req, res) => {
         const model = genAI.getGenerativeModel({
             model: "gemini-2.0-flash", generationConfig: {
                 temperature: 0.7,
-                maxOutputTokens: 100,
+                maxOutputTokens: 200,
             },
         });
         const result = await model.generateContent(prompt);
@@ -308,7 +308,7 @@ export const resumeReview = async (req, res) => {
         const model = genAI.getGenerativeModel({
             model: "gemini-2.0-flash", generationConfig: {
                 temperature: 0.7,
-                maxOutputTokens: 1000,
+                maxOutputTokens: 2000,
             },
         });
         const result = await model.generateContent(prompt);
@@ -325,7 +325,7 @@ export const resumeReview = async (req, res) => {
         // Save in DB
         await sql`
         INSERT INTO creations (user_id, prompt, content, type)
-        VALUES (${userId}, Review the uploaded resume, ${content}, 'resume-review')
+        VALUES (${userId}, ${"Review uploaded resume"}, ${content}, 'resume-review')
     `;
 
         res.status(200).json({ success: true, content });
