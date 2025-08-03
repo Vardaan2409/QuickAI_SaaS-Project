@@ -1,5 +1,7 @@
 <img width="2829" height="1492" alt="Screenshot (157)" src="https://github.com/user-attachments/assets/b44f60c5-2e02-4e50-9228-ba88ccaf5422" />
 
+(link: https://quick-ai-sigma-three.vercel.app)
+
 
 This AI SaaS platform offers premium AI tools like article generation, image editing, and resume analysis behind a subscription paywall. Built with the PERN stack, it includes secure authentication, billing, and serverless PostgreSQL.
 
