@@ -1,7 +1,13 @@
 import React from 'react'
 import { assets } from '../assets/assets'
+import toast from 'react-hot-toast'
 
 const Footer = () => {
+
+    const handleSubscribe = () => {
+        toast('This feature is under development!')
+    }
+
     return (
         <footer className="px-6 md:px-16 lg:px-24 xl:px-32 pt-8 w-full text-gray-500 mt-20">
             <div className="flex flex-col md:flex-row justify-between w-full gap-10 border-b border-gray-500/30 pb-6">
@@ -29,7 +35,7 @@ const Footer = () => {
                             <p>The latest news, articles, and resources, sent to your inbox weekly.</p>
                             <div className="flex items-center gap-2 pt-4">
                                 <input className="border border-gray-500/30 placeholder-gray-500 focus:ring-2 ring-indigo-600 outline-none w-full max-w-64 h-9 rounded px-2" type="email" placeholder="Enter your email" />
-                                    <button className="bg-primary w-24 h-9 text-white rounded cursor-pointer">Subscribe</button>
+                                    <button onClick={handleSubscribe} className="bg-primary w-24 h-9 text-white rounded cursor-pointer">Subscribe</button>
                             </div>
                         </div>
                     </div>
