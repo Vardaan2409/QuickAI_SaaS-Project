@@ -34,7 +34,7 @@ export const generateArticle = async (req, res) => {
 
         // Use Gemini model
         const model = genAI.getGenerativeModel({
-            model: "gemini-2.0-flash", generationConfig: {
+            model: "gemini-1.5-flash", generationConfig: {
                 temperature: 0.7,
                 maxOutputTokens: 2000,
             },
@@ -100,7 +100,7 @@ export const generateBlogTitle = async (req, res) => {
 
         // Use Gemini model
         const model = genAI.getGenerativeModel({
-            model: "gemini-2.0-flash", generationConfig: {
+            model: "gemini-1.5-flash", generationConfig: {
                 temperature: 0.7,
                 maxOutputTokens: 200,
             },
@@ -306,7 +306,7 @@ export const resumeReview = async (req, res) => {
 
         // Use Gemini model
         const model = genAI.getGenerativeModel({
-            model: "gemini-2.0-flash", generationConfig: {
+            model: "gemini-1.5-flash", generationConfig: {
                 temperature: 0.7,
                 maxOutputTokens: 2000,
             },
