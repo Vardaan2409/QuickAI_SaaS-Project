@@ -10,7 +10,7 @@ import pdf from "pdf-parse/lib/pdf-parse.js";
 // Instantiate Gemini
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
-//Generate Article
+// Generate Article
 export const generateArticle = async (req, res) => {
     try {
         const { userId } = req.auth();
@@ -34,7 +34,7 @@ export const generateArticle = async (req, res) => {
 
         // Use Gemini model
         const model = genAI.getGenerativeModel({
-            model: "gemini-1.5-flash", generationConfig: {
+            model: "gemini-2.5-flash", generationConfig: {
                 temperature: 0.7,
                 maxOutputTokens: 2000,
             },
@@ -306,7 +306,7 @@ export const resumeReview = async (req, res) => {
 
         // Use Gemini model
         const model = genAI.getGenerativeModel({
-            model: "gemini-1.5-flash", generationConfig: {
+            model: "gemini-1.5-flash-002", generationConfig: {
                 temperature: 0.7,
                 maxOutputTokens: 2000,
             },
