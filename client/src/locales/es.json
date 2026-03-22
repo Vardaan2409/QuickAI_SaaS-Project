@@ -1,0 +1,91 @@
+{
+  "navbar": {
+    "getStarted": "Empezar"
+  },
+  "hero": {
+    "title": "Crea contenido increíble con",
+    "titleHighlight": "herramientas de IA",
+    "description": "Transforma tu contenido con nuestra suite de herramientas de IA premium. Escribe artículos, genera imágenes y mejora tu flujo de trabajo.",
+    "cta": "Empezar a crear ahora",
+    "trusted": "Confiado por 10k personas"
+  },
+  "dashboard": {
+    "totalCreations": "Creaciones Totales",
+    "activePlan": "Plan Activo",
+    "recentCreations": "Creaciones Recientes",
+    "free": "Gratis",
+    "premium": "Premium"
+  },
+  "aiTools": {
+    "title": "Potentes Herramientas de IA",
+    "description": "Todo lo que necesitas para crear, mejorar y optimizar tu contenido con tecnología de IA de vanguardia.",
+    "articleWriter": {
+      "title": "Escritor de Artículos de IA",
+      "description": "Genera artículos de alta calidad y atractivos sobre cualquier tema con nuestra tecnología de escritura de IA."
+    },
+    "blogTitle": {
+      "title": "Generador de Títulos de Blog",
+      "description": "Encuentra el título perfecto y pegadizo para tus entradas de blog con nuestro generador impulsado por IA."
+    },
+    "imageGen": {
+      "title": "Generación de Imágenes de IA",
+      "description": "Crea visuales impresionantes con nuestra herramienta de generación de imágenes de IA, experimenta el poder de la IA."
+    },
+    "bgRemoval": {
+      "title": "Eliminación de Fondo",
+      "description": "Elimina fondos de tus imágenes sin esfuerzo con nuestra herramienta impulsada por IA."
+    },
+    "objectRemoval": {
+      "title": "Eliminación de Objetos",
+      "description": "Elimina objetos no deseados de tus imágenes sin problemas con nuestra herramienta de eliminación de objetos de IA."
+    },
+    "resumeReview": {
+      "title": "Revisor de Currículum",
+      "description": "Haz que tu currículum sea revisado por IA para mejorar tus posibilidades de conseguir el trabajo de tus sueños."
+    }
+  },
+  "footer": {
+    "tagline": "Experimenta el poder de la IA con QuickAi. Transforma tu creación de contenido con nuestra suite de herramientas de IA premium. Escribe artículos, genera imágenes y mejora tu flujo de trabajo.",
+    "company": "Empresa",
+    "links": {
+      "home": "Inicio",
+      "about": "Sobre nosotros",
+      "contact": "Contáctanos",
+      "privacy": "Política de privacidad"
+    },
+    "subscribeTitle": "Suscríbete a nuestro boletín",
+    "subscribeText": "Las últimas noticias, artículos y recursos, enviados a tu bandeja de entrada semanalmente.",
+    "emailPlaceholder": "Introduce tu correo electrónico",
+    "subscribeButton": "Suscribirse",
+    "copyright": "Copyright 2025 © Vardaan Madhisiya. Todos los derechos reservados.",
+    "devToast": "¡Esta función está en desarrollo!"
+  },
+  "plan": {
+    "title": "Elige Tu Plan",
+    "description": "Empieza gratis y escala a medida que creces. Encuentra el plan perfecto para tus necesidades de creación de contenido."
+  },
+  "testimonial": {
+    "title": "Amado por los Creadores",
+    "description": "No solo confíes en nuestra palabra. Esto es lo que dicen nuestros usuarios.",
+    "postedOn": "Publicado en",
+    "reviews": {
+      "briar": "El escritor de artículos de IA es un salvavidas, ¡me ahorró horas cada semana!",
+      "avery": "El generador de títulos de blog me da ideas frescas y pegadizas al instante. ¡Súper útil!",
+      "jordan": "Usé el revisor de currículum antes de postularme a trabajos, ¡y recibí 3 llamadas para entrevistas!",
+      "amelia": "El eliminador de fondos es extremadamente preciso. ¡Ya no necesito Photoshop!",
+      "leo": "La eliminación de objetos funciona como magia. ¡Salvó el proyecto de mi cliente en el último minuto!",
+      "nia": "¡Combinar la escritura de IA con la generación de imágenes le dio a mi blog un toque profesional!"
+    }
+  },
+  "sidebar": {
+    "dashboard": "Tablero",
+    "writeArticle": "Escribir Artículo",
+    "blogTitles": "Títulos de Blog",
+    "generateImages": "Generar Imágenes",
+    "removeBackground": "Eliminar Fondo",
+    "removeObjects": "Eliminar Objetos",
+    "reviewResume": "Revisar Currículum",
+    "community": "Comunidad",
+    "planLabel": "Plan"
+  }
+}

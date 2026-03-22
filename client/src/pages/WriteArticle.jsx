@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import axios from "axios";
 import { useAuth } from '@clerk/clerk-react';
 import Markdown from 'react-markdown';
+import toast from 'react-hot-toast';
 
 axios.defaults.baseURL = import.meta.env.VITE_BASE_URL;
 
@@ -37,7 +38,7 @@ const WriteArticle = () => {
             if (data.success) {
                 setContent(data.content)
             } else {
-                toast.error(error.message)
+                toast.error(data.message)
             }
         } catch (error) {
             toast.error(error.message);
