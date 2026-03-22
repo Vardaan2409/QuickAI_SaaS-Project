@@ -1,0 +1,91 @@
+{
+  "navbar": {
+    "getStarted": "Get Started"
+  },
+  "hero": {
+    "title": "Create amazing content with",
+    "titleHighlight": "AI tools",
+    "description": "Transform your content with our suite of premium AI tools. Write articles, generate images, and enhance your workflow.",
+    "cta": "Start creating now",
+    "trusted": "Trusted by 10k people"
+  },
+  "dashboard": {
+    "totalCreations": "Total Creations",
+    "activePlan": "Active Plan",
+    "recentCreations": "Recent Creations",
+    "free": "Free",
+    "premium": "Premium"
+  },
+  "aiTools": {
+    "title": "Powerful AI Tools",
+    "description": "Everything you need to create, enhance, and optimize your content with cutting-edge AI technology.",
+    "articleWriter": {
+      "title": "AI Article Writer",
+      "description": "Generate high-quality, engaging articles on any topic with our AI writing technology."
+    },
+    "blogTitle": {
+      "title": "Blog Title Generator",
+      "description": "Find the perfect, catchy title for your blog posts with our AI-powered generator."
+    },
+    "imageGen": {
+      "title": "AI Image Generation",
+      "description": "Create stunning visuals with our AI image generation tool, Experience the power of AI"
+    },
+    "bgRemoval": {
+      "title": "Background Removal",
+      "description": "Effortlessly remove backgrounds from your images with our AI-driven tool."
+    },
+    "objectRemoval": {
+      "title": "Object Removal",
+      "description": "Remove unwanted objects from your images seamlessly with our AI object removal tool."
+    },
+    "resumeReview": {
+      "title": "Resume Reviewer",
+      "description": "Get your resume reviewed by AI to improve your chances of landing your dream job."
+    }
+  },
+  "footer": {
+    "tagline": "Experience the power of AI with QuickAi. Transform your content creation with our suite of premium AI tools. Write articles, generate images, and enhance your workflow.",
+    "company": "Company",
+    "links": {
+      "home": "Home",
+      "about": "About us",
+      "contact": "Contact us",
+      "privacy": "Privacy policy"
+    },
+    "subscribeTitle": "Subscribe to our newsletter",
+    "subscribeText": "The latest news, articles, and resources, sent to your inbox weekly.",
+    "emailPlaceholder": "Enter your email",
+    "subscribeButton": "Subscribe",
+    "copyright": "Copyright 2025 © Vardaan Madhisiya. All Right Reserved.",
+    "devToast": "This feature is under development!"
+  },
+  "plan": {
+    "title": "Choose Your Plan",
+    "description": "Start for free and scale up as you grow. Find the perfect plan for your content creation needs."
+  },
+  "testimonial": {
+    "title": "Loved by Creators",
+    "description": "Don't just take our word for it. Here's what our users are saying.",
+    "postedOn": "Posted on",
+    "reviews": {
+      "briar": "The AI article writer is a lifesaver — it saved me hours every week!",
+      "avery": "The blog title generator gives me fresh, catchy ideas instantly. Super useful!",
+      "jordan": "I used the resume reviewer before applying for jobs — and got 3 interview calls!",
+      "amelia": "The background remover is extremely accurate. No need for Photoshop anymore!",
+      "leo": "Object removal works like magic. It saved my client project last minute!",
+      "nia": "Combining AI writing with image generation gave my blog a professional edge!"
+    }
+  },
+  "sidebar": {
+    "dashboard": "Dashboard",
+    "writeArticle": "Write Article",
+    "blogTitles": "Blog Titles",
+    "generateImages": "Generate Images",
+    "removeBackground": "Remove Background",
+    "removeObjects": "Remove Objects",
+    "reviewResume": "Review Resume",
+    "community": "Community",
+    "planLabel": "Plan"
+  }
+}

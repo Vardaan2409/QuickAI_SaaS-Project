@@ -1,46 +1,50 @@
+import { useTranslation } from 'react-i18next';
+
 const Testimonial = () => {
+    const { t } = useTranslation();
+
     const cardsData = [
         {
             image: 'https://images.unsplash.com/photo-1633332755192-727a05c4013d?q=80&w=200',
             name: 'Briar Martin',
             handle: '@neilstellar',
             date: 'April 20, 2025',
-            review: 'The AI article writer is a lifesaver — it saved me hours every week!'
+            review: t('testimonial.reviews.briar')
         },
         {
             image: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=200',
             name: 'Avery Johnson',
             handle: '@averywrites',
             date: 'May 10, 2025',
-            review: 'The blog title generator gives me fresh, catchy ideas instantly. Super useful!'
+            review: t('testimonial.reviews.avery')
         },
         {
             image: 'https://images.unsplash.com/photo-1527980965255-d3b416303d12?w=200&auto=format&fit=crop&q=60',
             name: 'Jordan Lee',
             handle: '@jordantalks',
             date: 'June 5, 2025',
-            review: 'I used the resume reviewer before applying for jobs — and got 3 interview calls!'
+            review: t('testimonial.reviews.jordan')
         },
         {
             image: 'https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=200&auto=format&fit=crop&q=60',
             name: 'Amelia Stone',
             handle: '@creativecoder',
             date: 'May 15, 2025',
-            review: 'The background remover is extremely accurate. No need for Photoshop anymore!'
+            review: t('testimonial.reviews.amelia')
         },
         {
             image: 'https://images.unsplash.com/photo-1501196354995-cbb51c65aaea?q=80&w=2071&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
             name: 'Leo Fernandez',
             handle: '@leocreates',
             date: 'June 2, 2025',
-            review: 'Object removal works like magic. It saved my client project last minute!'
+            review: t('testimonial.reviews.leo')
         },
         {
             image: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=200&auto=format&fit=crop&q=60',
             name: 'Nia Kapoor',
             handle: '@niatech',
             date: 'July 1, 2025',
-            review: 'Combining AI writing with image generation gave my blog a professional edge!'
+            review: t('testimonial.reviews.nia')
         },
     ];
 
@@ -61,7 +65,7 @@ const Testimonial = () => {
             <p className="text-sm py-4 text-gray-800">{card.review}</p>
             <div className="flex items-center justify-between text-slate-500 text-xs">
                 <div className="flex items-center gap-1">
-                    <span>Posted on</span>
+                    <span>{t('testimonial.postedOn')}</span>
                     <a href="https://x.com" target="_blank" className="hover:text-sky-500">
                         <svg width="11" height="10" viewBox="0 0 11 10" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="m.027 0 4.247 5.516L0 10h.962l3.742-3.926L7.727 10H11L6.514 4.174 10.492 0H9.53L6.084 3.616 3.3 0zM1.44.688h1.504l6.64 8.624H8.082z" fill="currentColor" />
@@ -90,9 +94,9 @@ const Testimonial = () => {
 
             {/* Heading Block */}
             <div className='text-center'>
-                <h2 className='text-slate-700 text-[42px] font-semibold'>Loved by Creators</h2>
+                <h2 className='text-slate-700 text-[42px] font-semibold'>{t('testimonial.title')}</h2>
                 <p className='text-gray-500 max-w-lg mx-auto'>
-                    Don't just take our word for it. Here's what our users are saying.
+                    {t('testimonial.description')}
                 </p>
             </div>
 
