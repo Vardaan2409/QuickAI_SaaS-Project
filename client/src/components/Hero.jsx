@@ -1,32 +1,35 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import { assets } from '../assets/assets';
-import { useTranslation } from 'react-i18next';
 
 const Hero = () => {
     const navigate = useNavigate();
-    const { t } = useTranslation();
 
     return (
-        <div className='px-4 sm:px-20 xl:px-32 relative inline-flex 
-        flex-col w-full justify-center bg-[url(/gradientBackground.png)]
-        bg-cover bg-no-repeat min-h-screen'>
-            <div className='text-center mb-6'>
-                <h1 className='text-3xl sm:text-5xl md:text-6xl 2xl:text-7xl
-                font-semibold mx-auto leading-[1.2]'>{t('hero.title')} <br/>
-                <span className='text-primary'>{t('hero.titleHighlight')}</span></h1>
-                <p className='mt-4 max-w-xs sm:max-w-lg 2xl:max-w-xl m-auto 
-                max-sm:text-xs text-gray-600'>{t('hero.description')}</p>
+        <div className='px-4 sm:px-20 xl:px-32 relative flex flex-col w-full justify-center mesh-background min-h-screen pt-20'>
+            <div className='text-center mb-10 max-w-4xl mx-auto'>
+                <h1 className='text-4xl sm:text-6xl md:text-7xl 2xl:text-8xl font-bold leading-[1.1] tracking-tight text-gray-900'>
+                    Create amazing <br className='hidden sm:block' /> 
+                    content with <span className='premium-gradient-text'>AI tools</span>
+                </h1>
+                <p className='mt-6 text-base sm:text-lg md:text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed'>
+                    Transform your content with our suite of premium AI tools. 
+                    Write articles, generate images, and enhance your workflow with the power of next-gen intelligence.
+                </p>
             </div>
 
-            <div onClick={()=>navigate('/ai')} className='flex flex-wrap justify-center gap-4 text-sm max-sm:text-xs'>
-                <button  className='bg-primary text-white px-10 py-3 rounded-lg 
-                hover:scale-102 active:scale-95 transition cursor-pointer'>{t('hero.cta')}</button>
+            <div className='flex flex-wrap justify-center gap-5'>
+                <button 
+                    onClick={() => navigate('/ai')} 
+                    className='bg-primary text-white px-12 py-4 rounded-full text-lg font-semibold shadow-premium hover:bg-secondary hover:shadow-glow hover:-translate-y-1 transition-all duration-300 active:scale-95 cursor-pointer'
+                >
+                    Start creating now
+                </button>
             </div>
 
-            <div className='flex items-center gap-4 mt-8 mx-auto text-gray-600'>
-                <img src={assets.user_group} alt='' className='h-8'/>
-                {t('hero.trusted')}
+            <div className='flex items-center gap-4 mt-16 mx-auto px-6 py-2 rounded-full glass-morphism shadow-sm border border-white/50 text-gray-500 text-sm font-medium'>
+                <img src={assets.user_group} alt='trusted users' className='h-7 grayscale opacity-70'/>
+                <span>Trusted by <span className='text-gray-900 font-bold'>10k+</span> creators worldwide</span>
             </div>
         </div>
     )

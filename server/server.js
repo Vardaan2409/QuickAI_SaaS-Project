@@ -9,7 +9,7 @@ import userRouter from './routes/userRoutes.js';
 const app = express();
 
 // Verify Env Vars
-const requiredEnvVars = ['CLERK_SECRET_KEY', 'CLERK_PUBLISHABLE_KEY', 'DATABASE_URL', 'OPENROUTER_API_KEY'];
+const requiredEnvVars = ['CLERK_SECRET_KEY', 'CLERK_PUBLISHABLE_KEY', 'DATABASE_URL', 'OPENROUTER_API_KEY', 'GROQ_API_KEY'];
 requiredEnvVars.forEach(varName => {
     if (!process.env[varName]) {
         console.warn(`>>> WARNING: Missing sensitive environment variable: ${varName}`);
