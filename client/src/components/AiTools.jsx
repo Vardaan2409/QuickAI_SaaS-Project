@@ -2,33 +2,36 @@ import React from 'react'
 import { AiToolsData } from '../assets/assets'
 import { useNavigate } from 'react-router-dom'
 import { useUser } from '@clerk/clerk-react';
-import { useTranslation } from 'react-i18next';
-
 const AiTools = () => {
     const navigate = useNavigate();
     const {user} = useUser();
-    const { t } = useTranslation();
 
     return (
-        <div className='px-4 sm:px-20 xl:px-32 my-24'>
-            <div className='text-center'>
-                <h2 className='text-slate-700 text-[42px] font-semibold'>
-                {t('aiTools.title')}</h2>
-                <p className='text-gray-500 max-w-lg mx-auto'>
-                {t('aiTools.description')}</p>
+        <div className='px-4 sm:px-20 xl:px-32 my-32'>
+            <div className='text-center mb-16'>
+                <h2 className='text-4xl sm:text-5xl font-bold tracking-tight mb-4'>
+                    <span className='premium-gradient-text'>Powerful AI Tools</span>
+                </h2>
+                <p className='text-gray-600 max-w-xl mx-auto text-lg leading-relaxed'>
+                    Everything you need to create, enhance, and optimize your content with cutting-edge AI technology at your fingertips.
+                </p>
             </div>
 
-            <div className='flex flex-wrap mt-10 justify-center'>
+            <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-10'>
                 {AiToolsData.map((tool, index)=>(
-                    <div key={index} className='p-8 m-4 max-w-xs rounded-lg
-                    bg=[#FDFDFE] shadow-lg border border-gray-100 
-                    hover:-translate-y-1 transition-all duration-300 cursor-pointer'
-                    onClick={()=>user && navigate(tool.path)}>
-                        <tool.Icon className='w-12 h-12 p-3 text-white rounded-xl' 
-                        style={{background: `linear-gradient(to bottom, ${tool.bg.from},
-                        ${tool.bg.to})`}}/>
-                        <h3 className='mt-6 mb-3 text-lg font-semibold'>{t(tool.title)}</h3>
-                        <p className='text-gray-400 text-sm max-w-[95%]'>{t(tool.description)}</p>
+                    <div 
+                        key={index} 
+                        className='glass-morphism p-10 rounded-[2.5rem] shadow-premium hover:-translate-y-2 hover:shadow-glow transition-all duration-500 cursor-pointer group flex flex-col items-center text-center'
+                        onClick={()=>user && navigate(tool.path)}
+                    >
+                        <div 
+                            className='w-20 h-20 flex items-center justify-center rounded-3xl shadow-lg transform group-hover:rotate-6 transition-transform duration-500'
+                            style={{background: `linear-gradient(135deg, ${tool.bg.from}, ${tool.bg.to})` || 'var(--color-primary)'}}
+                        >
+                            <tool.Icon className='w-10 h-10 text-white drop-shadow-md' />
+                        </div>
+                        <h3 className='mt-8 mb-4 text-2xl font-bold text-gray-900'>{tool.title}</h3>
+                        <p className='text-gray-600 text-base leading-relaxed'>{tool.description}</p>
                     </div>
                 ))}
             </div>
