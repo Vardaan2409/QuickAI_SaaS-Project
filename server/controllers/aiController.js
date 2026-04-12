@@ -1,204 +1,161 @@
-import { GoogleGenerativeAI } from "@google/generative-ai";
 import sql from "../configs/db.js";
 import { clerkClient } from "@clerk/express";
 import axios from "axios";
 import { v2 as cloudinary } from "cloudinary";
-import FormData from 'form-data';
+import FormData from "form-data";
 import fs from "fs";
 import pdf from "pdf-parse/lib/pdf-parse.js";
 
-// Instantiate Gemini
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+import { callGrok } from "../utils/grok.js";
+import { debugLog } from "../utils/logger.js";
 
-//Generate Article
+// 🔹 Generate Article
 export const generateArticle = async (req, res) => {
+    debugLog("ARTICLE", "generateArticle triggered", { body: req.body });
+
     try {
-        const { userId } = req.auth();
-        const { prompt, length } = req.body;
-        const plan = req.plan;
-        const free_usage = req.free_usage;
+        const authData = typeof req.auth === "function" ? await req.auth() : req.auth;
+        const { userId } = authData;
+        debugLog("ARTICLE", "Auth data resolved", { userId });
+
+        const { prompt } = req.body;
+        const plan = req.plan || 'free';
+        const free_usage = req.free_usage || 0;
+        
+        debugLog("ARTICLE", "Request data", { plan, free_usage, promptLength: prompt?.length });
 
         if (!prompt) {
-            return res.status(400).json({
-                success: false,
-                message: "Prompt is required",
-            });
+            return res.status(400).json({ success: false, message: "Prompt is required" });
         }
 
         if (plan !== "premium" && free_usage >= 10) {
-            return res.status(403).json({
-                success: false,
-                message: "Limit reached. Upgrade to continue.",
-            });
+            return res.status(403).json({ success: false, message: "Limit reached" });
         }
 
-        // Use Gemini model
-        const model = genAI.getGenerativeModel({
-            model: "gemini-2.0-flash", generationConfig: {
-                temperature: 0.7,
-                maxOutputTokens: 1000,
-            },
+        const content = await callGrok(prompt, {
+            temperature: 0.7,
+            max_tokens: 2000,
         });
-        const result = await model.generateContent(prompt);
-        const response = await result.response;
-        const content = response.text();
+        
+        debugLog("ARTICLE", "AI response received", { contentLength: content?.length });
 
         if (!content) {
-            return res.status(500).json({
-                success: false,
-                message: "AI did not return any content. Try again.",
-            });
+            debugLog("ARTICLE", "AI Call returned NULL content");
+            return res.status(500).json({ success: false, message: "AI failed" });
         }
 
-        // Save in DB
         await sql`
         INSERT INTO creations (user_id, prompt, content, type)
         VALUES (${userId}, ${prompt}, ${content}, 'article')
-    `;
+        `;
 
-        // Track usage
         if (plan !== "premium") {
             await clerkClient.users.updateUserMetadata(userId, {
-                privateMetadata: {
-                    free_usage: free_usage + 1,
-                },
+                privateMetadata: { free_usage: free_usage + 1 },
             });
         }
 
         res.status(200).json({ success: true, content });
 
     } catch (error) {
-        console.error("Gemini Error:", error.message);
-        res.status(500).json({
-            success: false,
-            message: "Internal server error: " + error.message,
-        });
+        console.error("Article Error:", error);
+        res.status(500).json({ success: false, message: error.message });
     }
 };
 
-//Generate Blog Title
+// 🔹 Generate Blog Title
 export const generateBlogTitle = async (req, res) => {
     try {
-        const { userId } = req.auth();
+        const { userId } = typeof req.auth === "function" ? await req.auth() : req.auth;
         const { prompt } = req.body;
-        const plan = req.plan;
-        const free_usage = req.free_usage;
+        const plan = req.plan || 'free';
+        const free_usage = req.free_usage || 0;
 
         if (!prompt) {
-            return res.status(400).json({
-                success: false,
-                message: "Prompt is required",
-            });
+            return res.status(400).json({ success: false, message: "Prompt is required" });
         }
 
         if (plan !== "premium" && free_usage >= 10) {
-            return res.status(403).json({
-                success: false,
-                message: "Limit reached. Upgrade to continue.",
-            });
+            return res.status(403).json({ success: false, message: "Limit reached" });
         }
 
-        // Use Gemini model
-        const model = genAI.getGenerativeModel({
-            model: "gemini-2.0-flash", generationConfig: {
-                temperature: 0.7,
-                maxOutputTokens: 100,
-            },
+        const content = await callGrok(prompt, {
+            temperature: 0.7,
+            max_tokens: 200,
         });
-        const result = await model.generateContent(prompt);
-        const response = await result.response;
-        const content = response.text();
 
         if (!content) {
-            return res.status(500).json({
-                success: false,
-                message: "AI did not return any content. Try again.",
-            });
+            return res.status(500).json({ success: false, message: "AI failed" });
         }
 
-        // Save in DB
         await sql`
         INSERT INTO creations (user_id, prompt, content, type)
         VALUES (${userId}, ${prompt}, ${content}, 'blog-title')
-    `;
+        `;
 
-        // Track usage
         if (plan !== "premium") {
             await clerkClient.users.updateUserMetadata(userId, {
-                privateMetadata: {
-                    free_usage: free_usage + 1,
-                },
+                privateMetadata: { free_usage: free_usage + 1 },
             });
         }
 
         res.status(200).json({ success: true, content });
 
     } catch (error) {
-        console.error("Gemini Error:", error.message);
-        res.status(500).json({
-            success: false,
-            message: "Internal server error: " + error.message,
-        });
+        console.error("Blog Title Error:", error);
+        res.status(500).json({ success: false, message: error.message });
     }
 };
 
-//Generate Image
+// 🔹 Generate Image (Clipdrop)
 export const generateImage = async (req, res) => {
     try {
-        const { userId } = req.auth();
+        const { userId } = typeof req.auth === "function" ? await req.auth() : req.auth;
         const { prompt, publish } = req.body;
-        const plan = req.plan;
+        const plan = req.plan || 'free';
 
         if (!prompt) {
-            return res.status(400).json({
-                success: false,
-                message: "Prompt is required",
-            });
+            return res.status(400).json({ success: false, message: "Prompt is required" });
         }
 
         if (plan !== "premium") {
-            return res.status(403).json({
-                success: false,
-                message: "This feature is only available for premium subscription"
-            });
+            return res.status(403).json({ success: false, message: "Premium only" });
         }
 
-        // Use Clipdrop
-        const formData = new FormData()
-        formData.append('prompt', prompt)
-        const { data } = await axios.post("https://clipdrop-api.co/text-to-image/v1", formData, {
-            headers: { 'x-api-key': process.env.CLIPDROP_API_KEY, },
-            responseType: "arraybuffer",
-        })
+        const formData = new FormData();
+        formData.append("prompt", prompt);
 
-        const base64Image = `data:image/png;base64,${Buffer.from(data, 'binary').
-            toString('base64')}`;
+        const { data } = await axios.post(
+            "https://clipdrop-api.co/text-to-image/v1",
+            formData,
+            {
+                headers: { "x-api-key": process.env.CLIPDROP_API_KEY },
+                responseType: "arraybuffer",
+            }
+        );
 
+        const base64Image = `data:image/png;base64,${Buffer.from(data).toString("base64")}`;
         const { secure_url } = await cloudinary.uploader.upload(base64Image);
 
-        // Save in DB
         await sql`
         INSERT INTO creations (user_id, prompt, content, type, publish)
         VALUES (${userId}, ${prompt}, ${secure_url}, 'image', ${publish ?? false})
-    `;
+        `;
 
         res.status(200).json({ success: true, content: secure_url });
 
     } catch (error) {
-        console.error("Gemini Error:", error.message);
-        res.status(500).json({
-            success: false,
-            message: "Internal server error: " + error.message,
-        });
+        console.error("Image Error:", error);
+        res.status(500).json({ success: false, message: error.message });
     }
 };
 
-//Image Background Remover
+// 🔹 Remove Background
 export const removeImageBackground = async (req, res) => {
     try {
-        const { userId } = req.auth();
+        const { userId } = typeof req.auth === "function" ? await req.auth() : req.auth;
         const image = req.file;
-        const plan = req.plan;
+        const plan = req.plan || 'free';
 
         if (plan !== "premium") {
             return res.status(403).json({
@@ -208,38 +165,29 @@ export const removeImageBackground = async (req, res) => {
         }
 
         const { secure_url } = await cloudinary.uploader.upload(image.path, {
-            transformation: [
-                {
-                    effect: 'background_removal',
-                    background_removal: 'remove_the_background'
-                }
-            ]
+            transformation: [{ effect: "background_removal" }],
         });
 
-        // Save in DB
         await sql`
         INSERT INTO creations (user_id, prompt, content, type)
-        VALUES (${userId}, 'Remove background from image', ${secure_url}, 'image')
-    `;
+        VALUES (${userId}, 'Remove background', ${secure_url}, 'image')
+        `;
 
         res.status(200).json({ success: true, content: secure_url });
 
     } catch (error) {
-        console.error("Gemini Error:", error.message);
-        res.status(500).json({
-            success: false,
-            message: "Internal server error: " + error.message,
-        });
+        console.error("BG Error:", error);
+        res.status(500).json({ success: false, message: error.message });
     }
 };
 
-//Object Remover
+// 🔹 Remove Object
 export const removeImageObject = async (req, res) => {
     try {
-        const { userId } = req.auth();
+        const {userId} = typeof req.auth === 'function' ? await req.auth() : req.auth;
         const { object } = req.body;
         const image = req.file;
-        const plan = req.plan;
+        const plan = req.plan || 'free';
 
         if (plan !== "premium") {
             return res.status(403).json({
@@ -250,91 +198,52 @@ export const removeImageObject = async (req, res) => {
 
         const { public_id } = await cloudinary.uploader.upload(image.path);
 
-        // const image_url = cloudinary.url(public_id, {
-        //     transformation: [{ effect: `gen_remove: ${object}` }],
-        //     resource_type: 'image'
-        // })
         const image_url = cloudinary.url(public_id, {
-            transformation: [
-                { effect: `gen_remove:${object}` },
-                { width: 800, crop: "scale" }
-            ],
-            resource_type: "image"
+            transformation: [{ effect: `gen_remove:${object}` }],
         });
 
-        // Save in DB
         await sql`
         INSERT INTO creations (user_id, prompt, content, type)
-        VALUES (${userId}, ${`Remove ${object} from image`}, ${image_url}, 'image')
-    `;
+        VALUES (${userId}, ${`Remove ${object}`}, ${image_url}, 'image')
+        `;
 
         res.status(200).json({ success: true, content: image_url });
 
     } catch (error) {
-        console.error("Gemini Error:", error.message);
-        res.status(500).json({
-            success: false,
-            message: "Internal server error: " + error.message,
-        });
+        console.error("Object Remove Error:", error);
+        res.status(500).json({ success: false, message: error.message });
     }
 };
 
-//Resume Review
+// 🔹 Resume Review
 export const resumeReview = async (req, res) => {
     try {
-        const { userId } = req.auth();
+        const { userId } = typeof req.auth === "function" ? await req.auth() : req.auth;
         const resume = req.file;
-        const plan = req.plan;
-
-        if (plan !== "premium") {
-            return res.status(403).json({
-                success: false,
-                message: "This feature is only available for premium subscription"
-            });
-        }
-
-        if (resume.size > 5 * 1024 * 1024) {
-            return res.json({ success: false, message: "Resume file size exceeds allowed size (5MB)." })
-        }
 
         const dataBuffer = fs.readFileSync(resume.path);
         const pdfData = await pdf(dataBuffer);
 
-        const prompt = `Review the following resume and provide constructive feedback 
-        on its strengths, weaknesses, and areas for improvement. Resume 
-        Content:\n\n${pdfData.text}`
+        const prompt = `Review this resume:\n${pdfData.text}`;
 
-        // Use Gemini model
-        const model = genAI.getGenerativeModel({
-            model: "gemini-2.0-flash", generationConfig: {
-                temperature: 0.7,
-                maxOutputTokens: 1000,
-            },
+        const content = await callGrok(prompt, {
+            temperature: 0.7,
+            max_tokens: 2000,
         });
-        const result = await model.generateContent(prompt);
-        const response = await result.response;
-        const content = response.text();
 
         if (!content) {
-            return res.status(500).json({
-                success: false,
-                message: "AI did not return any content. Try again.",
-            });
+            return res.status(500).json({ success: false, message: "AI failed" });
         }
 
-        // Save in DB
         await sql`
         INSERT INTO creations (user_id, prompt, content, type)
-        VALUES (${userId}, Review the uploaded resume, ${content}, 'resume-review')
-    `;
+        VALUES (${userId}, 'Resume Review', ${content}, 'resume-review')
+        `;
 
         res.status(200).json({ success: true, content });
 
     } catch (error) {
-        console.error("Gemini Error:", error.message);
-        res.status(500).json({
-            success: false,
-            message: "Internal server error: " + error.message,
-        });
+        console.error("Groq Resume Review Error:", error);
+        res.status(500).json({ success: false, message: error.message });
     }
 };
