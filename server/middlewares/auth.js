@@ -12,7 +12,6 @@ export const auth = async (req, res, next)=>{
         const hasPremiumPlan = isStandardPremium || isPremiumPro;
 
         const user = await clerkClient.users.getUser(userId);
-        console.log(`>>> User ${userId} | Premium: ${hasPremiumPlan} | Free Usage: ${user.privateMetadata.free_usage || 0}`);
 
         if(!hasPremiumPlan && user.privateMetadata.free_usage){
             req.free_usage = user.privateMetadata.free_usage
