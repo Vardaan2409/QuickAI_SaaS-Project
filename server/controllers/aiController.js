@@ -7,22 +7,14 @@ import fs from "fs";
 import pdf from "pdf-parse/lib/pdf-parse.js";
 
 import { callGrok } from "../utils/grok.js";
-import { debugLog } from "../utils/logger.js";
 
 // 🔹 Generate Article
 export const generateArticle = async (req, res) => {
-    debugLog("ARTICLE", "generateArticle triggered", { body: req.body });
-
     try {
-        const authData = typeof req.auth === "function" ? await req.auth() : req.auth;
-        const { userId } = authData;
-        debugLog("ARTICLE", "Auth data resolved", { userId });
-
+        const { userId } = typeof req.auth === "function" ? await req.auth() : req.auth;
         const { prompt } = req.body;
         const plan = req.plan || 'free';
         const free_usage = req.free_usage || 0;
-        
-        debugLog("ARTICLE", "Request data", { plan, free_usage, promptLength: prompt?.length });
 
         if (!prompt) {
             return res.status(400).json({ success: false, message: "Prompt is required" });
@@ -36,11 +28,8 @@ export const generateArticle = async (req, res) => {
             temperature: 0.7,
             max_tokens: 2000,
         });
-        
-        debugLog("ARTICLE", "AI response received", { contentLength: content?.length });
 
         if (!content) {
-            debugLog("ARTICLE", "AI Call returned NULL content");
             return res.status(500).json({ success: false, message: "AI failed" });
         }
 
